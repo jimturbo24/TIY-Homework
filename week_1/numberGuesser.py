@@ -6,9 +6,11 @@ def numberGenerator(a = 1, b = 1000):
 randomNum = numberGenerator()
 
 print("Guess a number between 1 and 1000")
-userGuess = input("Enter your guess: ")
+userGuess = int(input("Enter your guess: "))
 
 if userGuess == randomNum:
     print("Correct")
+elif userGuess > randomNum:
+    print("Too high!")
 else:
-    print("Incorrect")
+    print("Too low!")
