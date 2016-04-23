@@ -1,29 +1,39 @@
-def correctLetterAppend(aList, aChar, aWord):
-    letterCount = 0
-    for letter in aWord:
-        if letter == aChar.lower():
-            aList[letterCount] = letter
-        letterCount +=1
-    return aList
+# def randomWord():
+#     import random
+#     f = open("/usr/share/dict/words", "r")
+#     words = f.readlines()
+#     f.close
+#     return words[random.randint(0, len(words))].strip()
+#
+# def lengthSelector(num=1):
+#     word = randomWord()
+#     if num == 1:
+#         while len(word) >= 6:
+#             word = randomWord()
+#         return word
+#     elif num == 2:
+#         while len(word) <= 6 or len(word) >= 10:
+#             word =randomWord()
+#         return word
+#     elif num == 3:
+#         while len(word) <= 10:
+#             word = randomWord()
+#         return word
+#
+# for item in range(0,10):
+#     word = lengthSelector(1)
+#     print(word, len(word))
 
-word = "puppies"
-trys = 8
+# diffLevel = ""
+#
+# while diffLevel not in ("1","2","3"):
+#     print(diffLevel)
+#     diffLevel = input("> ")
+#     print(diffLevel)
 
-guessList= (["_"] * len(word))
+word = "jimmyies"
 
-print(guessList)
-
-while trys:
-    userGuess = input("You have {0} trys left. Enter a letter: ".format(trys))
-    while len(userGuess) > 1 or userGuess.isdigit():
-        userGuess = input("Sorry, no numbers or words please! Enter a letter: ")
-    correctLetterAppend(guessList, userGuess, word)
-    if userGuess not in word:
-        trys -= 1
-    print(guessList)
-
-
-
-for char in guessList:
-    print(char, end=" ")
-print("")
+if "'" in word:
+    print("Your mystery word has {0} letters in it. Good Luck!".format(len(word)-1))
+else:
+    print("Your mystery word has {0} letters in it. Good Luck!".format(len(word)))
