@@ -10,10 +10,9 @@ class PlayingCard:
 
         self.value = value
         self.suit = suit
-        self.long_name = value + " " + suit
     suits = ('hearts', 'clubs', 'diamonds', 'spades')
     values = {'ace': 'ace',
-              '2': 'duece',
+              '2': 'two',
               '3': 'three',
               '4': 'four',
               '5': 'five',
@@ -26,15 +25,15 @@ class PlayingCard:
               'king': 'king',
               'jack': 'jack'}
 
-    def shortName(self):
+    def short_name(self):
         return '{0}{1}'.format(self.value[0].upper(),
                                self.suit[0].upper())
 
-    def longName(self):
+    def long_name(self):
         return '{0} of {1}'.format(self.values[self.value].capitalize(),
                                    self.suit.capitalize())
 
-class Deck(PlayingCard):
+class Deck():
     def __init__(self):
         self.cards = []
         for suit in PlayingCard.suits:
@@ -45,12 +44,29 @@ class Deck(PlayingCard):
         random.shuffle(self.cards)
         return
 
+    def deal_one(self):
+        return self.cards.pop()
 
+# card = PlayingCard('5', 'spades')
+# print(type(card))
+#
+# test_deck = [PlayingCard('2', 'clubs'), PlayingCard('7', 'hearts')]
+# print(test_deck[0].value)
 deck = Deck()
-print(deck.cards[0].longName())
-# deck.shuffle()
-playercards = []
-playercards.append(deck.pop())
+# for card in range(0, 52):
+#     print(deck.cards[card].longName())
+deck.shuffle()
+playerHand = []
+playerHand.append(deck.deal_one())
+print(len(playerHand))
+print(len(deck.cards))
+print(playerHand[0].long_name())
+playerHand.append(deck.deal_one())
+print(playerHand[1].long_name())
+
+# print(deck.deal_one().long_name())
+# print(len(deck.cards))
+
 
 # playAgain = "y"
 #
