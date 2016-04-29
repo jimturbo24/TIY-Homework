@@ -32,6 +32,10 @@ class PlayingCard:
     def long_name(self):
         return '{0} of {1}'.format(self.values[self.value].capitalize(),
                                    self.suit.capitalize())
+
+    def get_value(self):
+        return self.value
+
     def num_val(self):
         if self.value in ('jack', 'queen', 'king'):
             return 10
@@ -41,7 +45,7 @@ class PlayingCard:
             return int(self.value)
 
 
-class Deck():
+class Deck:
     def __init__(self):
         self.cards = []
         for suit in PlayingCard.suits:
@@ -56,48 +60,45 @@ class Deck():
         return self.cards.pop()
 
 
-class Hand():
+class Hand:
     def __init__(self):
         self.cards = []
 
     def dealt_a_card(self, aCard):
         return self.cards.append(aCard)
 
-    def get_hand(self):
-        for num in range(0, len(self.cards)-1):
-            print(self.cards[num].long_name())
-
     def get_last_card(self):
         return(self.cards[len(self.cards)-1].long_name())
 
     def sum_of_hand(self):
         score = 0
-        for num in range(0, len(self.cards)-1):
+        for num in range(0, len(self.cards)):
             score += self.cards[num].num_val()
-        return score
-
-    def sum_with_ace(self):
-        score = 0
-        for num in range(0, len(self.cards)-1):
-            if self.cards[num].value() == 'ace':
-                if self.sum_of_hand() > 11:
-                    score += 1
-            else:
-                score += self.cards[num].num_val()
+        for num in range(0, len(self.cards)):
+            if self.cards[num].get_value() == 'ace':
+                if score > 21:
+                    score -= 10
         return score
 
     def get_results(self):
-        self.get_hand()
-        print('Score: {0}'.format(self.sum_with_ace()))
+        for num in range(0, len(self.cards)):
+            print(self.cards[num].long_name())
+        print('Score: {0}'.format(self.sum_of_hand()))
 
+
+class Cash:
+    def __init__(self, pot):
+        self.pot = pot
 
 
 playAgain = "y"
+wallet = 100
+bet = 10
 
-print("""\n         ------ Let's Play Blackjack! ------
+print("""\n                 ------ Let's Play Blackjack! ------
 You will be playing against a computer generated dealer. Your goal is to have
 more points than the dealer without exeeding 21 points. You win if you have
-more points than dealer, but less than 21 points. Have fun!\n""")
+more points than dealer, or exactly 21 points. Have fun!\n""")
 
 while "y" in playAgain.lower():
 
@@ -107,58 +108,64 @@ while "y" in playAgain.lower():
     computerHand = Hand()
     exit = 1
 
-    while len(computerHand.cards) < 3:
+    while len(computerHand.cards) < 2:
         playerHand.dealt_a_card(deck.deal_one())
         computerHand.dealt_a_card(deck.deal_one())
 
     while exit:
-        if playerHand.sum_with_ace() == 21:
-            print("Blackjack, you win!")
-            break
-        elif playerHand.sum_with_ace() > 21:
-            print("Sorry, you busted. You loose")
-            break
-        elif computerHand.sum_with_ace() == 21:
-            print("You loose! The dealer hit Blackjack")
-            break
-        elif computerHand.sum_with_ace() > 21:
-            print("The dealer busted. You win!")
-            break
-
         print('\nYour hand: ')
         playerHand.get_results()
+        print("You have ${0} in your wallet.".format((wallet-bet)))
         print('\nDealer hand: ')
         computerHand.get_results()
+
+        if playerHand.sum_of_hand() == 21:
+            print("\nBlackjack, you win!")
+            wallet += bet
+            break
+        elif playerHand.sum_of_hand() > 21:
+            print("\nSorry, you busted. You loose")
+            wallet -= bet
+            break
+        elif computerHand.sum_of_hand() == 21:
+            print("\nYou loose! The dealer hit Blackjack")
+            wallet -= bet
+            break
+        elif computerHand.sum_of_hand() > 21:
+            print("\nThe dealer busted. You win!")
+            wallet += bet
+            break
 
         while True:
             playerChoice = input("\nWould you like to hit(h) or stand(s)? ")
             if 'h' in playerChoice.lower():
-                print("You hit....{0}".format(playerHand.get_last_card()))
                 playerHand.dealt_a_card(deck.deal_one())
-                if computerHand.sum_with_ace() < 17:
-                    print("Dealer hits....{0}".format(computerHand.get_last_card()))
+                print("You hit....{0}".format(playerHand.get_last_card()))
+                if computerHand.sum_of_hand() < 17:
                     computerHand.dealt_a_card(deck.deal_one())
+                    print("Dealer hits....{0}".format(computerHand.get_last_card()))
                     break
                 else:
                     print("Dealer stands.")
                     break
             elif 's' in playerChoice.lower():
                 print("You stand.")
-                if computerHand.sum_with_ace() < 17:
-                    print("Dealer hits....{0}".format(computerHand.get_last_card()))
+                if computerHand.sum_of_hand() < 17:
                     computerHand.dealt_a_card(deck.deal_one())
+                    print("Dealer hits....{0}".format(computerHand.get_last_card()))
                     break
-                elif computerHand.sum_with_ace() < playerHand.sum_with_ace():
-                    print("Dealer stands. You win!")
+                elif computerHand.sum_of_hand() < playerHand.sum_of_hand():
+                    print("Dealer stands.\nYou win!")
+                    wallet += bet
                     exit = 0
                     break
-                elif computerHand.sum_with_ace() > playerHand.sum_with_ace():
-                    print("Dealer stands. You loose!")
+                elif computerHand.sum_of_hand() > playerHand.sum_of_hand():
+                    print("Dealer stands.\nYou loose!")
+                    wallet -= bet
                     exit = 0
                     break
                 else:
-                    print("Dealer stands.")
-                    print("It's a draw!")
+                    print("Dealer stands.\nIt's a draw!")
                     exit = 0
                     break
             else:
