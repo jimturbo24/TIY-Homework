@@ -67,6 +67,9 @@ class Hand():
         for num in range(0, len(self.cards)-1):
             print(self.cards[num].long_name())
 
+    def get_last_card(self):
+        return(self.cards[len(self.cards)-1].long_name())
+
     def sum_of_hand(self):
         score = 0
         for num in range(0, len(self.cards)-1):
@@ -78,62 +81,78 @@ class Hand():
         print('Score: {0}'.format(self.sum_of_hand()))
 
 
-deck = Deck()
-deck.shuffle()
-playerHand = Hand()
-computerHand = Hand()
-playerChoice = 'h'
 
-while len(computerHand.cards) < 3:
-    playerHand.dealt_a_card(deck.deal_one())
-    computerHand.dealt_a_card(deck.deal_one())
+playAgain = "y"
 
-while 'h' in playerChoice.lower():
-    print('Your hand: ')
-    playerHand.get_results()
+print("""\n         ------ Let's Play Blackjack! ------
+You will be playing against a computer generated dealer. Your goal is to have
+more points than the dealer without exeeding 21 points. You win if you have
+more points than dealer, but less than 21 points. Have fun!\n""")
 
-    print('\nComputer hand: ')
-    computerHand.get_results()
+while "y" in playAgain.lower():
 
-    if playerHand.sum_of_hand() == 21:
-        print("You hit 21, you win!")
-        break
-    elif playerHand.sum_of_hand() > 21:
-        print("Sorry, you busted. You loose")
-        break
-    elif computerHand.sum_of_hand() == 21:
-        print("You loose! The computer hit 21")
-        break
-    elif computerHand.sum_of_hand() > 21:
-        print("The computer busted. You win!")
-        break
-    playerChoice = input("\nWould you like to hit(h) or stay(s)? ")
-    if 'h' in playerChoice:
+    deck = Deck()
+    deck.shuffle()
+    playerHand = Hand()
+    computerHand = Hand()
+    exit = 1
+
+    while len(computerHand.cards) < 3:
         playerHand.dealt_a_card(deck.deal_one())
-        if computerHand.sum_of_hand() < playerHand.sum_of_hand():
-            computerHand.dealt_a_card(deck.deal_one())
-    else:
-        if computerHand.sum_of_hand() < playerHand.sum_of_hand():
-            computerHand.dealt_a_card(deck.deal_one())
+        computerHand.dealt_a_card(deck.deal_one())
 
-if computerHand.sum_of_hand() < playerHand.sum_of_hand():
-    print("You beat the computer!")
-elif computerHand.sum_of_hand() > playerHand.sum_of_hand():
-    print("The computer beat you!")
+    while exit:
+        if playerHand.sum_of_hand() == 21:
+            print("Blackjack, you win!")
+            break
+        elif playerHand.sum_of_hand() > 21:
+            print("Sorry, you busted. You loose")
+            break
+        elif computerHand.sum_of_hand() == 21:
+            print("You loose! The dealer hit Blackjack")
+            break
+        elif computerHand.sum_of_hand() > 21:
+            print("The dealer busted. You win!")
+            break
 
+        print('\nYour hand: ')
+        playerHand.get_results()
+        print('\nDealer hand: ')
+        computerHand.get_results()
 
-# for card in range(0, 52):
-#     print(deck.cards[card].longName())
+        while True:
+            playerChoice = input("\nWould you like to hit(h) or stand(s)? ")
+            if 'h' in playerChoice.lower():
+                print("You hit....{0}".format(playerHand.get_last_card()))
+                playerHand.dealt_a_card(deck.deal_one())
+                if computerHand.sum_of_hand() < 17:
+                    print("Dealer hits....{0}".format(computerHand.get_last_card()))
+                    computerHand.dealt_a_card(deck.deal_one())
+                    break
+                else:
+                    print("Dealer stands.")
+                    break
+            elif 's' in playerChoice.lower():
+                print("You stand.")
+                if computerHand.sum_of_hand() < 17:
+                    print("Dealer hits....{0}".format(computerHand.get_last_card()))
+                    computerHand.dealt_a_card(deck.deal_one())
+                    break
+                elif computerHand.sum_of_hand() < playerHand.sum_of_hand():
+                    print("Dealer stands. You win!")
+                    exit = 0
+                    break
+                elif computerHand.sum_of_hand() > playerHand.sum_of_hand():
+                    print("Dealer stands. You loose!")
+                    exit = 0
+                    break
+                else:
+                    print("Dealer stands.")
+                    print("It's a draw!")
+                    exit = 0
+                    break
+            else:
+                print("I didn't catch that?")
+                continue
 
-
-# playAgain = "y"
-#
-# print("""\n         ------ Let's Play Blackjack! ------
-# You will be playing against a computer generated dealer. Your goal is to have
-# more points than the dealer without exeeding 21 points. You win if you have
-# more points than dealer, but less than 21 points. Have fun!\n""")
-#
-# while "y" in playAgain.lower():
-#
-#
-#     playAgain = input("Wanna play again (y/n)?")
+    playAgain = input("\nDeal again (y/n)?")
