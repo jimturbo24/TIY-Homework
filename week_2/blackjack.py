@@ -76,9 +76,19 @@ class Hand():
             score += self.cards[num].num_val()
         return score
 
+    def sum_with_ace(self):
+        score = 0
+        for num in range(0, len(self.cards)-1):
+            if self.cards[num].value() == 'ace':
+                if self.sum_of_hand() > 11:
+                    score += 1
+            else:
+                score += self.cards[num].num_val()
+        return score
+
     def get_results(self):
         self.get_hand()
-        print('Score: {0}'.format(self.sum_of_hand()))
+        print('Score: {0}'.format(self.sum_with_ace()))
 
 
 
@@ -102,16 +112,16 @@ while "y" in playAgain.lower():
         computerHand.dealt_a_card(deck.deal_one())
 
     while exit:
-        if playerHand.sum_of_hand() == 21:
+        if playerHand.sum_with_ace() == 21:
             print("Blackjack, you win!")
             break
-        elif playerHand.sum_of_hand() > 21:
+        elif playerHand.sum_with_ace() > 21:
             print("Sorry, you busted. You loose")
             break
-        elif computerHand.sum_of_hand() == 21:
+        elif computerHand.sum_with_ace() == 21:
             print("You loose! The dealer hit Blackjack")
             break
-        elif computerHand.sum_of_hand() > 21:
+        elif computerHand.sum_with_ace() > 21:
             print("The dealer busted. You win!")
             break
 
@@ -125,7 +135,7 @@ while "y" in playAgain.lower():
             if 'h' in playerChoice.lower():
                 print("You hit....{0}".format(playerHand.get_last_card()))
                 playerHand.dealt_a_card(deck.deal_one())
-                if computerHand.sum_of_hand() < 17:
+                if computerHand.sum_with_ace() < 17:
                     print("Dealer hits....{0}".format(computerHand.get_last_card()))
                     computerHand.dealt_a_card(deck.deal_one())
                     break
@@ -134,15 +144,15 @@ while "y" in playAgain.lower():
                     break
             elif 's' in playerChoice.lower():
                 print("You stand.")
-                if computerHand.sum_of_hand() < 17:
+                if computerHand.sum_with_ace() < 17:
                     print("Dealer hits....{0}".format(computerHand.get_last_card()))
                     computerHand.dealt_a_card(deck.deal_one())
                     break
-                elif computerHand.sum_of_hand() < playerHand.sum_of_hand():
+                elif computerHand.sum_with_ace() < playerHand.sum_with_ace():
                     print("Dealer stands. You win!")
                     exit = 0
                     break
-                elif computerHand.sum_of_hand() > playerHand.sum_of_hand():
+                elif computerHand.sum_with_ace() > playerHand.sum_with_ace():
                     print("Dealer stands. You loose!")
                     exit = 0
                     break
