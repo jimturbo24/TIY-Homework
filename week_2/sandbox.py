@@ -1,35 +1,32 @@
-class Cash:
-    def __init__(self, bet, wallet):
-        self.bet = bet
-        self.wallet = wallet
-
-    # def win(self):
-    #     return self.wallet += self.bet * 2
-    #
-    # def loose(self):
-    #     return self.wallet -= self.bet * 2
-
-
-
-playerCash = Cash(10, 100)
-
-# playerCash.win()
-
-print(type(playerCash.bet))
-print(playerCash.wallet)
-
-# # deck = Deck()
-# # deck.shuffle()
-# hand_1 = Hand()
-# # hand_2 = Hand()
+# import time
+# import sys
 #
-# hand_1.dealt_a_card(PlayingCard('ace', 'spades'))
-# hand_1.dealt_a_card(PlayingCard('ace', 'hearts'))
-# # hand_1.dealt_a_card(PlayingCard('jack', 'hearts'))
-# hand_1.dealt_a_card(PlayingCard('ace', 'hearts'))
+# # print("something{0}{1}{2}{3}".format(".", ".", ".", "."))
+# # time.sleep(4)
+# # print("something else.......")
 #
-# print(hand_1.cards)
-# print(len(hand_1.cards))
-# # print(hand_1.cards[0].value)
-# # print(hand_1.cards[1].value)
-# hand_1.get_results()
+# sixDots = "......"
+#
+# def slow_dots(dots):
+#     for char in dots:
+#         print(char, end='')
+#         sys.stdout.flush()
+#         time.sleep(0.5)
+#
+# slow_dots(sixDots)
+
+nums_1 = [1,2,3,4,5]
+nums_2 = [1,2,3,4,5]
+nums_3 = [1,2,3,4,5]
+nums_4 = [1,2,3,4,5]
+
+fourNums = nums_1+nums_2 +nums_3 +nums_4
+
+print(nums_1)
+print(fourNums)
+
+nums_1.append(6)
+fourNums.append('dog')
+
+print(nums_1)
+print(fourNums)
