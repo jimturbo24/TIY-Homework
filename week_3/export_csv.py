@@ -1,6 +1,6 @@
 import psycopg2
 
-wavedata = []
+# wavedata = []
 
 # Connect to test database
 conn = psycopg2.connect("dbname=jimturbo user=jimturbo")
