@@ -1,4 +1,3 @@
-import csv
 import psycopg2
 
 newPlayerList = []
@@ -10,67 +9,6 @@ feildList = ('Name', 'Age', 'Games played', 'Games started', 'Minutes played',
              'Offensive rebounds', 'Defensive rebounds', 'Total rebounds',
              'Assists', 'Steals', 'Blocked shots', 'Turn overs', 'Personal fouls',
              'Total points')
-
-def clear_table():
-    conn = psycopg2.connect("dbname=jimturbo user=jimturbo")
-    cur = conn.cursor()
-    cur.execute("""DELETE FROM spurs_stats""")
-    conn.commit()
-    cur.close()
-    conn.close()
-
-def open_csv():
-    rowData = []
-    with open('spurs_stats.csv') as csvfile:
-        fileReader = csv.reader(csvfile)
-        header = next(fileReader)
-        for row in fileReader:
-            rowData.append(row[1:])
-    return rowData
-
-def insert_csv(aList):
-    conn = psycopg2.connect("dbname=jimturbo user=jimturbo")
-    cur = conn.cursor()
-    for row in aList:
-        cur.execute("""
-    INSERT INTO spurs_stats
-                (player_name,
-                  age,
-                  gm_tot,
-                  gm_start,
-                  min_plyd,
-                  feild_gl_md,
-                  feild_gl_att,
-                  feild_gl_pct,
-                  three_pt_md,
-                  three_pt_att,
-                  three_pt_pct,
-                  two_pt_md,
-                  two_pt_att,
-                  two_pt_pct,
-                  eff_fg_pct,
-                  free_thw_md,
-                  free_thw_att,
-                  free_thw_pct,
-                  off_rbnd,
-                  def_rbnd,
-                  rbnd_tot,
-                  ast,
-                  stl,
-                  blk,
-                  trn_ovr,
-                  prsnl_fwl,
-                  tot_pts)
-          VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                  %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                  %s, %s, %s, %s, %s, %s, %s)""", row)
-    conn.commit()
-    cur.close()
-    conn.close()
-
-def write_table():
-    spursStats = open_csv()
-    insert_csv(spursStats)
 
 def retrieve_player(playerName):
     conn = psycopg2.connect("dbname=jimturbo user=jimturbo")
@@ -143,11 +81,6 @@ while True:
             newPlayerInput = input('{}: '.format(i))
             newPlayerList.append(newPlayerInput)
         insert_player(newPlayerList)
-        print('{} has been added.'.format(newPlayerList[0]))
-    elif 'r' in userChoice.lower():
-            clear_table()
-            write_table()
-            print('Player stats have been reset!')
     elif 'e' in userChoice.lower():
         print('Thanks for stopping by!')
         break

@@ -7,9 +7,9 @@ import json
 def index(name='Man'):
     return template('<div>Hello, {{person}}!</div>', person=name)
 
-@route('<thing>/<id:int>')
+@route('/<thing>/<id:int>')
 def thing(thing, id):
-    return template('Ae you looking for {{object}} with {{id}}', object=thing, id=id)
+    return template('Are you looking for {{object}} with identifier {{id}}', object=thing, id=id)
 
 @route('/data/hello')
 def data_hello():
