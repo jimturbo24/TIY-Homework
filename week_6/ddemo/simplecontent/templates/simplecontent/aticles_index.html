@@ -1,0 +1,11 @@
+{% if recent_articles %}
+  <ul>
+  {% for article in recent articles %}
+    <li>
+      <a href="/articles/{{ article.id }}/">
+      {{ article.title }}
+      </a>
+    </li>
+  {% endfor %}
+  </ul>
+{% endif %}
